@@ -3,11 +3,11 @@
 Summary: An utility for finding files by name
 Name: mlocate
 Version: 0.26
-Release: 6%{?dist}
+Release: 8%{?dist}
 License: GPLv2
-URL: https://fedorahosted.org/mlocate/
+URL: https://pagure.io/mlocate/
 Group: Applications/System
-Source0: https://fedorahosted.org/releases/m/l/mlocate/mlocate-%{version}.tar.xz
+Source0: https://releases.pagure.org/mlocate/mlocate-%{version}.tar.xz
 Source1: updatedb.conf
 Source2: mlocate.cron
 Requires: crontabs
@@ -15,6 +15,9 @@ Requires(pre): shadow-utils
 Requires(post): grep, sed
 Provides: bundled(gnulib)
 Obsoletes: slocate <= 2.7-30
+BuildRequires: git
+
+Patch0001: 0001-Point-the-project-URL-and-bug-reporting-address-at-h.patch
 
 %description
 mlocate is a locate/updatedb implementation.  It keeps a database of
@@ -25,7 +28,7 @@ rereading most of the file system, which makes updatedb faster and does not
 trash the system caches as much as traditional locate implementations.
 
 %prep
-%setup -q
+%autosetup -S git_am
 
 %build
 %configure --localstatedir=%{_localstatedir}/lib
@@ -62,6 +65,14 @@ fi
 %ghost %attr(0640,root,slocate) %{_localstatedir}/lib/mlocate/mlocate.db
 
 %changelog
+* Thu Nov 09 2017 Michal Sekletar <msekleta@redhat.com> - 0.26-8
+- change upstream URL also in specfile (#1502361)
+
+* Wed Nov 08 2017 Michal Sekletar <msekleta@redhat.com> - 0.26-7
+- don't index fuse.glusterfs filesystems (#1331870)
+- don't index files on ceph filesystem (#1333152)
+- update link to upstream repository (#1502361)
+
 * Wed Feb 03 2016 Michal Sekletar <msekleta@redhat.com> - 0.26-6
 - index zfs filesystems despite the fact they are marked as nodev (#1304416)
 - add gpfs to PRUNEFS (#1180672)

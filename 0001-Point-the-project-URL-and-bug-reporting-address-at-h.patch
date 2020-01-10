@@ -1,0 +1,94 @@
+From 6bdeb296cca5f938ecc14dfc2e10cef0aa320bd1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Miloslav=20Trma=C4=8D?= <mitr@redhat.com>
+Date: Tue, 21 Feb 2017 00:00:34 +0100
+Subject: [PATCH] Point the project URL and bug reporting address at
+ https://pagure.io/mlocate
+
+---
+ README          | 10 +++++++---
+ configure.ac    |  4 ++--
+ po/Makevars     |  2 +-
+ tests/config.at |  2 +-
+ tests/locate.at |  2 +-
+ 5 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/README b/README
+index 02289ec..9744d76 100644
+--- a/README
++++ b/README
+@@ -9,7 +9,7 @@ The locate(1) utility is intended to be completely compatible to slocate.  It
+ also attempts to be compatible to GNU locate, when it does not conflict with
+ slocate compatibility.
+ 
+-New releases will be available at https://fedorahosted.org/mlocate/ .
++New releases will be available at https://pagure.io/mlocate .
+ 
+ Installation
+ ============
+@@ -29,5 +29,9 @@ Bugs
+ ====
+ Please consider reporting the bug to your distribution's bug tracking system.
+ 
+-Otherwise, report bugs at https://fedorahosted.org/mlocate/ .  Bug reports
+-with patches are especially welcome.
++Otherwise, report bugs at https://pagure.io/mlocate .  Pull requests are
++especially welcome.
++ 
++Translations can be contributed through
++https://fedora.zanata.org/project/view/mlocate/ .
++
+diff --git a/configure.ac b/configure.ac
+index f11bac6..bb76c83 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1,6 +1,6 @@
+ # Process this file with autoconf to produce a configure script.
+-AC_INIT([mlocate], [0.26], [mitr@redhat.com], ,
+-        [https://fedorahosted.org/mlocate/])
++AC_INIT([mlocate], [0.26], [https://pagure.io/mlocate], ,
++        [https://pagure.io/mlocate])
+ AC_COPYRIGHT(
+ [Copyright (C) 2005, 2006, 2007, 2009, 2010, 2012 Red Hat, Inc. All rights
+ reserved.
+diff --git a/po/Makevars b/po/Makevars
+index 62a744e..1be8266 100644
+--- a/po/Makevars
++++ b/po/Makevars
+@@ -34,7 +34,7 @@ COPYRIGHT_HOLDER = Red Hat, Inc
+ # It can be your email address, or a mailing list address where translators
+ # can write to without being subscribed, or the URL of a web page through
+ # which the translators can contact you.
+-MSGID_BUGS_ADDRESS = https://fedorahosted.org/mlocate/
++MSGID_BUGS_ADDRESS = https://pagure.io/mlocate
+ 
+ # This is the list of locale categories, beyond LC_MESSAGES, for which the
+ # message catalogs shall be used.  It is usually empty.
+diff --git a/tests/config.at b/tests/config.at
+index fd671bc..3886f6d 100644
+--- a/tests/config.at
++++ b/tests/config.at
+@@ -75,7 +75,7 @@ Update a mlocate database.
+ The configuration defaults to values read from
+ `PATH'.
+ 
+-Report bugs to mitr@redhat.com.
++Report bugs to https://pagure.io/mlocate.
+ ]])
+ AT_CHECK([[updatedb -h | sed "s/\`[^']*'/\`PATH'/g"]], , [expout])
+ AT_CHECK([[updatedb --help | sed "s/\`[^']*'/\`PATH'/g"]], , [expout])
+diff --git a/tests/locate.at b/tests/locate.at
+index 970ce8b..4f718ef 100644
+--- a/tests/locate.at
++++ b/tests/locate.at
+@@ -247,7 +247,7 @@ Search for entries in a mlocate database.
+   -V, --version          print version information
+   -w, --wholename        match whole path name (default)
+ 
+-Report bugs to mitr@redhat.com.
++Report bugs to https://pagure.io/mlocate.
+ ]])
+ 
+ AT_CHECK([[locate -h | sed 's,^\([ 	]*\)/.*)$,\1PATH),']], , [expout])
+-- 
+2.13.6
+
