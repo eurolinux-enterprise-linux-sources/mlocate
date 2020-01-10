@@ -3,7 +3,7 @@
 Summary: An utility for finding files by name
 Name: mlocate
 Version: 0.26
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv2
 URL: https://fedorahosted.org/mlocate/
 Group: Applications/System
@@ -53,15 +53,21 @@ fi
 
 %files -f mlocate.lang
 %doc AUTHORS COPYING NEWS README
-%config(noreplace) /etc/cron.daily/mlocate
+%config(noreplace) %attr(0700,-,-) /etc/cron.daily/mlocate
 %config(noreplace) %{_sysconfdir}/updatedb.conf
 %attr(2711,root,slocate) %{_bindir}/locate
 %{_bindir}/updatedb
 %{_mandir}/man*/*
 %dir %attr(0750,root,slocate) %{_localstatedir}/lib/mlocate
-%ghost %{_localstatedir}/lib/mlocate/mlocate.db
+%ghost %attr(0640,root,slocate) %{_localstatedir}/lib/mlocate/mlocate.db
 
 %changelog
+* Wed Feb 03 2016 Michal Sekletar <msekleta@redhat.com> - 0.26-6
+- index zfs filesystems despite the fact they are marked as nodev (#1304416)
+- add gpfs to PRUNEFS (#1180672)
+- mlocate.db is ghost file created with non-default attrs, list them explicitly so rpm --verify doesn't report errors (#1182306)
+- use more strict permissions for cron script (#1179633)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.26-5
 - Mass rebuild 2014-01-24
 
