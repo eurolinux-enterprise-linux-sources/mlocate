@@ -1,7 +1,7 @@
 Summary: An utility for finding files by name
 Name: mlocate
 Version: 0.22.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv2
 URL: https://fedorahosted.org/mlocate/
 Group: Applications/System
@@ -10,6 +10,10 @@ Source1: updatedb.conf
 Source2: mlocate.cron
 # Upstream changeset 87bcb87d48f939b851bdcf9580dfa89fe03438e7
 Patch0: mlocate-0.22.2-noop-bind.patch
+# Upstream changeset 26c72fbce02e28076464be184ff2525665286b99
+Patch1: mlocate-0.22.2-man-typo.patch
+# Upstream changeset 60b367e5e3fe0f57a7496da99827f9e1946ae3d9
+Patch2: mlocate-0.22.2-empty-d_name.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires(pre): shadow-utils
 Requires(triggerpostun): shadow-utils
@@ -27,6 +31,8 @@ trash the system caches as much as traditional locate implementations.
 %prep
 %setup -q
 %patch0 -p1 -b .noop-bind
+%patch1 -p1 -b .man-typo
+%patch2 -p1 -b .empty-d_name
 
 %build
 %configure --localstatedir=%{_localstatedir}/lib
@@ -72,6 +78,13 @@ exit 0
 %ghost %{_localstatedir}/lib/mlocate/mlocate.db
 
 %changelog
+* Mon Sep 24 2012 Miloslav Trmač <mitr@redhat.com> - 0.22.2-4
+- Fix a typo in locate(1)
+  Resolves: #690800
+- When encountering an empty file name in updatedb, print the name of the
+  offending directory instead of aborting
+  Resolves: #699363
+
 * Tue Mar 30 2010 Miloslav Trmač <mitr@redhat.com> - 0.22.2-3
 - Ignore no-op bind mounts
   Resolves: #577822
