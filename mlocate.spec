@@ -1,7 +1,7 @@
 Summary: An utility for finding files by name
 Name: mlocate
 Version: 0.22.2
-Release: 4%{?dist}
+Release: 6%{?dist}
 License: GPLv2
 URL: https://fedorahosted.org/mlocate/
 Group: Applications/System
@@ -16,7 +16,6 @@ Patch1: mlocate-0.22.2-man-typo.patch
 Patch2: mlocate-0.22.2-empty-d_name.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires(pre): shadow-utils
-Requires(triggerpostun): shadow-utils
 Requires(post): grep, sed
 Obsoletes: slocate <= 2.7-30
 
@@ -62,22 +61,26 @@ if /bin/grep -q '^[^#]*DAILY_UPDATE' %{_sysconfdir}/updatedb.conf; then
     /bin/sed -i.rpmsave -e '/DAILY_UPDATE/s/^/#/' %{_sysconfdir}/updatedb.conf
 fi
 
-%triggerpostun -- slocate <= 2.7-30
-getent group slocate >/dev/null || groupadd -g 21 -r -f slocate
-exit 0
-
 %files -f mlocate.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS README
-/etc/cron.daily/mlocate.cron
+%attr(0700,-,-) /etc/cron.daily/mlocate.cron
 %config(noreplace) %{_sysconfdir}/updatedb.conf
 %attr(2711,root,slocate) %{_bindir}/locate
 %{_bindir}/updatedb
 %{_mandir}/man*/*
 %dir %attr(0750,root,slocate) %{_localstatedir}/lib/mlocate
-%ghost %{_localstatedir}/lib/mlocate/mlocate.db
+%ghost %attr(0640,root,slocate) %{_localstatedir}/lib/mlocate/mlocate.db
 
 %changelog
+* Mon Jan 26 2015 Michal Sekletar <msekleta@redhat.com> - 0.22.2-6
+- mlocate.db is ghost file created with non-default attrs, list them explicitly so rpm --verify doesn't report errors (#1182304)
+
+* Wed Jan 07 2015 Michal Sekletar <msekleta@redhat.com> - 0.22.2-5
+- index zfs filesystems despite the fact they are marked as nodev (#1023779)
+- use more strict permissions for cron script and mark it as config (#1012534)
+- add gpfs to PRUNEFS (#1168301)
+
 * Mon Sep 24 2012 Miloslav Trmač <mitr@redhat.com> - 0.22.2-4
 - Fix a typo in locate(1)
   Resolves: #690800
