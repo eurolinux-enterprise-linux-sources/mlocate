@@ -3,7 +3,7 @@
 Summary: An utility for finding files by name
 Name: mlocate
 Version: 0.26
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: GPLv2
 URL: https://fedorahosted.org/mlocate/
 Group: Applications/System
@@ -62,6 +62,12 @@ fi
 %ghost %{_localstatedir}/lib/mlocate/mlocate.db
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.26-5
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.26-4
+- Mass rebuild 2013-12-27
+
 * Wed Apr 10 2013 Miloslav Trmač <mitr@redhat.com> - 0.26-3
 - Update cron packaging for https://fedoraproject.org/wiki/Packaging:CronFiles
   Notably, the cron script (previously not %%config) was renamed.
